@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: deploy
+  name: runner-deployment
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: runner
+  template:
+    metadata:
+      labels:
+        app: runner
+    spec:
+      containers:
+        - name: runner
+          image: admin.dev.internal:5000/runner:0.0.6
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: deploy
+  name: runner-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: runner-controller
+  template:
+    metadata:
+      labels:
+        app: runner-controller
+    spec:
+      containers:
+        - name: runner-controller
+          image: admin.dev.internal:5000/controller:0.0.1
+      restartPolicy: Always
